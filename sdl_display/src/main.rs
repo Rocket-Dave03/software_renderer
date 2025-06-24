@@ -1,4 +1,3 @@
-use rgb::{FromSlice, RGB8};
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
@@ -46,10 +45,8 @@ pub fn main() {
                 _ => {}
             }
         }
-        // The rest of the game loop goes here...
-
         tex.with_lock(None, |pixels: &mut [u8], stride: usize| {
-            let view: &mut [u32] = unsafe { std::slice::from_raw_parts_mut(std::mem::transmute(pixels.as_mut_ptr()), pixels.len()/4) };
+            let view: &mut [u32] = unsafe { std::slice::from_raw_parts_mut(std::mem::transmute::<*mut u8, *mut u32>(pixels.as_mut_ptr()), pixels.len()/4) };
             for y in 0..600 {
                 for x in 0..800 {
                     let idx = y * stride / 4 + x;
